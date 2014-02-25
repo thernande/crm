@@ -1,0 +1,4 @@
+hasOne ("tiene un") 
+hasMany ("tiene muchos")
+belongsTo ("pertenece a")
+hasAndBelongsToMany ("tiene y pertenece a muchos")
