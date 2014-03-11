@@ -1,5 +1,6 @@
-
-
+<?php  $url=$this->request->here;
+       $comprobar=strpos($url,"edit");
+?>
 
 <ol class="breadcrumb">
   <li><?php echo $this->Html->link("Home", array('controller' => 'pages',  'action' => 'home')); ?></li>
@@ -7,9 +8,18 @@
   <li class="active"> Registrar Nueva Propuesta</li>
 </ol>
 
-
-<?php   echo $this->Form->create('Proffer', array('class' => 'form-horizontal')); ?>  
+<?php //si esta editando 
+	if($comprobar!==false){
+		echo $this->Form->create('Proffer', array('class' => 'form-forizontal'));
+	?>
+		<h3>Modificar Oportunidad de Negocio</h3>
+	<?php
+	}
+	else{//si esta añadiendo
+	
+   		echo $this->Form->create('Proffer', array('class' => 'form-horizontal')); ?>  
    <h3>Registrar Oportunidad de Negocio</h3>
+<?php } ?>
    <br>
 
 
@@ -18,8 +28,15 @@
     <div class="col-lg-10">
     <?php
 
-       //echo $this->Form->input('customer_id', array('label' => false, 'options' => $Customers,  'empty' => 'selecione elc cliente' ));   
-      echo $this->Form->input('customer_id', array('onchange' => 'getContactsByCustomer(this.value)', 'options' => $customers, 'value' => $customer_id, 'empty' => '-Seleccione el cliente-', 'label' => false, 'div' => array('class' => 'controls')));  
+       //echo $this->Form->input('customer_id', array('label' => false, 'options' => $Customers,  'empty' => 'selecione elc cliente' ));  
+       
+       if($comprobar!==false){
+	   		echo $this->Form->select('customer_id', array($customers),array('onchange' => 'getContactsByCustomer(this.value)', 'label' => false, 'div' => array('class' => 'controls')));
+	   } 
+	   else{
+	   	echo $this->Form->input('customer_id', array('onchange' => 'getContactsByCustomer(this.value)', 'options' => $customers, 'value' => $customer_id, 'empty' => '--Seleccion El Cliente--', 'label' => false, 'div' => array('class' => 'controls')));
+	   }
+        
      ?>  
     </div>
   </div>
@@ -29,8 +46,13 @@
     <div class="col-lg-4">
     <?php
 
-          
-     echo $this->Form->input('contact_id', array('options' => $contacts, 'value' => $contact_id, 'empty' => '-Seleccione el Contacto-', 'label' => false, 'div' => array('class' => 'controls')));       
+      if($comprobar!==FALSE){
+	  	
+     echo $this->Form->select('contact_id', array($Proffer['Contact']['id'] => $Proffer['Contact']['name']),array( 'label' => false, 'empty' => NULL,'div' => array('class' => 'controls'))); 
+     }
+     else{
+	 	echo $this->Form->select('contact_id', array($contacts),array( 'label' => false, 'empty' => '--Seleccione el Contacto--' ,'div' => array('class' => 'controls')));
+	 }      
      ?>  
      
     </div>
@@ -41,7 +63,7 @@
     <div class="col-lg-10">
     <?php
       echo $this->Form->input('line', array('label' => false, 'empty' => '-Seleccione la linea-',
-                              'options' => array('Combustible' => 'Combustible', 'Contratación de Personal' => 'Contratación de Personal', 'Logistica' => 'Logistica','SIS' => 'SIS', 'Vigilancia' => 'Vigilancia' )));
+                              'options' => array('Combustible' => 'Combustible', 'Contratación de Personal' => 'Contratación de Personal', 'Logistica' => 'Logistica','SIS' => 'SIS', 'Vigilancia' => 'Vigilancia' ) ));
      ?>  
     </div>
   </div>

@@ -94,12 +94,21 @@ class CustomersController extends AppController {
                     $this->request->data['Contact']['email'] = $email; 
 
                     $this->request->data['Contact']['state'] =   'Activo' ;
+					//crear directorio del cliente
+					$serv = WWW_ROOT.'/files/';
 
+					$ruta = $serv . $this->request->data['Customer']['name'];
+					if(!is_dir($ruta)){
+						mkdir($ruta);
+						$this->Session->setFlash('Se ha creado el directorio: '.$ruta);
+					}
+					//termina la creacion del archivo
 
                     $this->Customer->Contact->save($this->request->data);
                     $this->Session->setFlash(__('El Cliente ha sido salvado'));
-                    $this->redirect(array('action' => 'index'));  
-
+                    $this->redirect(array('action' => 'index'));
+                    
+                    
                     }
                     else
                    {

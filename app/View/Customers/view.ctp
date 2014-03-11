@@ -58,8 +58,6 @@
 </div><!-- /.modal -->
 
 
-
-
 <div class ="container">
 
 
@@ -73,6 +71,8 @@
         <li><a href="#note" data-toggle="tab" >Notas</a></li>
         <li><a href="#contact" data-toggle="tab" >Contactos</a></li>
     </ul>
+    
+    
     <div id="my-tab-content" class="tab-content">
         
         <!-- tab 1-->
@@ -142,12 +142,12 @@
                         <table class="table table-bordered">
 
                         <tr >
-                        <th class="headerlist" align="center" whidth = "40%" >Nombre</th>
-                        <th class="headerlist" align="center" whidth = "20%" >Telefono</th>
-                        <th class="headerlist" align="center" whidth = "10%" >Email</th>
-                        <th class="headerlist" align="center" whidth = "10%" >Estado</th>
-                        <th class="headerlist" align="center" whidth = "10%" >Fecha de Creación</th>
-                        <td class="headerlist" whidtd = "10%"colspan ="2" align ="center">Accion</td>
+                        <th class="headerlist" align="center" width = "40%" >Nombre</th>
+                        <th class="headerlist" align="center" width = "20%" >Telefono</th>
+                        <th class="headerlist" align="center" width = "10%" >Email</th>
+                        <th class="headerlist" align="center" width = "10%" >Estado</th>
+                        <th class="headerlist" align="center" width = "10%" >Fecha de Creación</th>
+                        <td class="headerlist" width = "10%"colspan ="2" align ="center">Accion</td>
                         
                         </tr>
                         

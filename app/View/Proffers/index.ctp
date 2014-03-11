@@ -3,7 +3,7 @@
   <li class="active">Seguimiento a las Propuestas Comerciales</li>
 </ol>
 
-<h3 class "info">Seguimiento a las Propuestas Comerciales</h3>
+<h3 class = "info">Seguimiento a las Propuestas Comerciales</h3>
 
 <div class="container well ">
 
@@ -49,12 +49,12 @@ echo $this->Html->image("icon/btn_plus.png", array(
   <table class="table table-bordered">
 
 		<tr >
-		<th class="headerlist" align="center" whidth = "10%" >Id</th>
-		<th class="headerlist" align="center" whidth = "10%" >Cliente</th>
-		<th class="headerlist" align="center" whidth = "40%" >Descripcion</th>		
-		<th class="headerlist" align="center" whidth = "10%" >Estado</th>
-		<th class="headerlist" align="center" whidth = "15%" >Fecha de Creación</th>
-		<td class="headerlist" whidtd = "5%"colspan ="4" align ="center">Accion</td>
+		<th class="headerlist" align="center" width = "10%" >Id</th>
+		<th class="headerlist" align="center" width = "10%" >Cliente</th>
+		<th class="headerlist" align="center" width = "40%" >Descripcion</th>		
+		<th class="headerlist" align="center" width = "10%" >Estado</th>
+		<th class="headerlist" align="center" width = "15%" >Fecha de Creación</th>
+		<td class="headerlist" width = "5%"colspan ="4" align ="center">Accion</td>
 		
 		</tr>
 		
@@ -90,7 +90,7 @@ echo $this->Html->image("icon/btn_plus.png", array(
 
 		    'height'=>'15',
 		    'width'=>'15',
-		    'url' => array('action' => 'docs', $Proffer['Proffer']['id']),
+		    'url' => array('controller' => 'Files', 'action' => 'view', $Proffer['Proffer']['id']),
 		));
 
 		?>

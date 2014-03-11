@@ -15,6 +15,7 @@ class ProffersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('add');
+        
 		$this->loadModel('Municipality');
     $this->set('Municipalities', $this->Municipality->find('list',array(
                'order' => array('name' => 'asc'))
@@ -169,7 +170,7 @@ class ProffersController extends AppController {
     public function edit($id = null) {
         $this->Proffer->id = $id;
 
-         
+         $this->set('Proffer', $this->Proffer->read(null, $id));
           //$this->set('Proffer_id',$id);
           
           
@@ -195,22 +196,22 @@ class ProffersController extends AppController {
 
 
     
-
+	
+	
 
 
 
     
     $contacts = array();
-
     if($customer_id != '') {
 
       $this->loadModel('contacts');
       $contacts = $this->get_contacts_by_customer($customer_id);
+      
     }
-    
     $contact_id = $this->getRequestValue('contact_id');
-    $this->set('contacts', $contacts);
-    $this->set('contact_id', $contact_id);     
+    $this->set('contacts',$contacts);  
+   	$this->set('contact_id', $contact_id);
         
        
 
@@ -222,6 +223,7 @@ class ProffersController extends AppController {
             throw new NotFoundException(__('Registro Invalido'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
+        	if($this->request->data)
             if ($this->Proffer->save($this->request->data)) {
                 $this->Session->setFlash(__('El Registro ha sido salvado'));
                 $this->redirect(array('action' => 'index'));
@@ -289,6 +291,13 @@ class ProffersController extends AppController {
 
     return parent::isAuthorized($user);
     }
+    
+    public function upload($id = null){
+    	$this->Proffer->id = $id;
+		$this->set('Proffer', $this->Proffer->read(null,$id));
+		$this->redirect(array('controller' => 'Files', 'action' => 'view'));
+	}
+   
 
 
 
