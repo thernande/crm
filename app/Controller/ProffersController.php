@@ -16,17 +16,6 @@ class ProffersController extends AppController {
         parent::beforeFilter();
         $this->Auth->allow('add');
         
-		$this->loadModel('Municipality');
-    $this->set('Municipalities', $this->Municipality->find('list',array(
-               'order' => array('name' => 'asc'))
-    ));
-    $this->set(compact('Municipalities'));
-     
-
-     
-    
-    
-
     }
 
 

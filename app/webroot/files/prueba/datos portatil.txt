@@ -1,0 +1,21 @@
+nombre equipo= mssit005.esu.com.co (es enserio)
+
+sistema operativo= Windows XP Service Pack 3
+intel core 2 CPU 1.83 GHz, 1 GB ram
+
+programas instalados
+- 3com wireless infrastructure
+- ABBYY finereader 9
+- agente de red kapersky lab
+- agere system hda modem
+- bullzip PDF printer
+- winrar
+- sentinel protection
+- commnicator
+- kyocera product library
+- keepass password safe
+- SAFIX
+
+se puede conectar a la red pero no por medio de WIFI
+
+esta es la prueba de que si funciona bn el controlador de versiones o lo que sea que acabe de hacer

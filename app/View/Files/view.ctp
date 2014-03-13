@@ -14,7 +14,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Subir Documento</h4>
       </div>
-
+	<!-- formulario para la subir los archivos(oculto hasta que se oprime el boton subir archivo) -->
       <div class="modal-body">
       <?php echo $this->Form->create('File',array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data', 'action' => 'add')  ); ?>  
            
@@ -22,14 +22,13 @@
       <?php echo $this->Form->input("customer", array( 'type' => 'hidden', 'value' =>  $Proffer['Customer']['name'] )); ?> 
       <?php echo $this->Form->input("customer_id", array( 'type' => 'hidden', 'value' =>  $Proffer['Customer']['id'] )); ?> 
       <div class="form-group">
-        <label for="name" class="col-lg-2 control-label">Nombre</label>
+        <label for="name" class="col-lg-2 control-label">descripcion</label>
         <div class="col-lg-10">
-         <?php echo $this->Form->input('name', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+         <?php echo $this->Form->textarea('description', array('class' => 'ckeditor', 'cols' => '50', 'rows' => '5')); ?>
         </div>
       </div>
       
       <?php echo $this->Form->input('proffer_id', array('type'=>'hidden', 'value' => $Proffer['Proffer']['id'])); ?>		
-      <?php echo $this->Form->input('url', array('type'=>'hidden', 'value' => '')); ?>
 
       <div class="form-group">
         <div class="col-lg-10">
@@ -45,6 +44,7 @@
 
        
        </div>
+       <!-- final del formulario -->
        <div class="modal-footer">
         <a class="img-responsive" alt="Responsive image" ><?php echo $this->Html->image('logo/logo.png')?></a>
       </div>
@@ -65,8 +65,10 @@
                         <table class="table table-bordered">
 
                         <tr >
-                        <th class="headerlist" align="center" width = "70%" >archivo</th>
-                        <th class="headerlist" align="center" width = "30%" >acciones</th>
+                        <th class="headerlist" align="center" width = "30%" >archivo</th>
+                        <th class="headerlist" align="center" width = "60%" >descripcion</th>
+                        <th class="headerlist" align="center" width = "10%" >version</th>
+                        <th class="headerlist" align="center" width = "10%" >acciones</th>
 
                         
                         </tr>
@@ -75,13 +77,18 @@
                               
                               <tr>
                               <td align="center"><?php echo $this->Html->link($File['File']['name'],$File['File']['url']); ?></td>
-                              <td><?php echo $this->Html->image("icon/trash.png", array(
+                              <td><?php echo $File['File']['description'];?></td>
+                              <td align="center"><?php echo $File['File']['version'];?></td>
+                              <td><?php echo $this->Form->postLink(
+                              $this->Html->image("icon/trash.png", array(
                                   "tittle" => "Eliminar",
 
                                   'height'=>'15',
-                                  'width'=>'15',
-                                  'url' => array('action' => 'delete', $File['File']['id'])
-                              ));?></td>
+                                  'width'=>'15')),
+                                  array('action' => 'delete', $File['File']['id']),
+                                  array('escape'=>false),
+                                  __('desea eliminar el archivo?', $File['File']['id'])
+                              );?></td>
                               </tr>
                               <?php endforeach;    ?>
                         </table>

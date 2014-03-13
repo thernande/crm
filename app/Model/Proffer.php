@@ -42,6 +42,13 @@ class Proffer extends AppModel {
 
     );
 
+	
+		public $hasMany= array(
+		'File' => array(
+            'className' => 'File',
+            'foreignKey' => 'proffer_id',
+            'dependent' => false
+        ));
      
     
         public $validate = array(
