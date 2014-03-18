@@ -29,14 +29,13 @@
 <p>
 <?php 
 
-echo $this->Html->image("icon/btn_plus.png", array(
-		    "label" => "Crear nuevo usuario",
-
-		    'height'=>'15',
+echo $this->Html->link("Nuevo Cliente", array(
+		    'action' => 'add'),
+		    array('height'=>'15',
 		    'width'=>'15',
-		    'url' => array('action' => 'add'),
-
-		)).' Crear Nuevo Cliente';
+		    'role' => 'button',
+		    'class' => 'btn btn-default')
+		);
 ?>
 </p>
 </br>
@@ -47,12 +46,12 @@ echo $this->Html->image("icon/btn_plus.png", array(
   <table class="table table-bordered">
 
 		<tr >
-		<th class="headerlist" align="center" whidth = "40%" >Cliente</th>
-		<th class="headerlist" align="center" whidth = "20%" >Telefono</th>
-		<th class="headerlist" align="center" whidth = "10%" >Dirección</th>
-		<th class="headerlist" align="center" whidth = "10%" >Estado</th>
-		<th class="headerlist" align="center" whidth = "10%" >Fecha de Creación</th>
-		<td class="headerlist" whidtd = "10%"colspan ="2" align ="center">Accion</td>
+		<th class="headerlist" align="center" width = "40%" >Cliente</th>
+		<th class="headerlist" align="center" width = "20%" >Telefono</th>
+		<th class="headerlist" align="center" width = "10%" >Dirección</th>
+		<th class="headerlist" align="center" width = "10%" >Estado</th>
+		<th class="headerlist" align="center" width = "10%" >Fecha de Creación</th>
+		<td class="headerlist" width = "10%"colspan ="2" align ="center">Accion</td>
 		
 		</tr>
 		

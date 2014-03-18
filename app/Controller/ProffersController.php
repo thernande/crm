@@ -38,6 +38,10 @@ class ProffersController extends AppController {
 
     public function view($id = null) {
         $this->Proffer->id = $id;
+        $this->loadModel('File');
+		$this->set('Files', $this->File->find('all', array(
+		'conditions' => array(
+		'proffer_id =' => $id ))));
         if (!$this->Proffer->exists()) {
             throw new NotFoundException(__('Registro Invalido'));
         }

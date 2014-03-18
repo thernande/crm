@@ -43,11 +43,11 @@ public $helpers = array('Html','Form');
 				
 						$this->Session->setFlash(__('se ha guardado el archivo'));
 						move_uploaded_file($this->request->data['File']['file']['tmp_name'],$ruta);
-						$this->redirect(array('action' =>'view', $proffer_id));
+						$this->redirect(array('controller' => 'Proffers','action' =>'view', $proffer_id));
 					}
 					else{
 						$this->Session->setFlash(__('no se guardo el documento'));
-						$this->redirect(array('action' =>'view', $proffer_id));
+						$this->redirect(array('controller' => 'Proffers', 'action' =>'view', $proffer_id));
 					}
 			}
 		}

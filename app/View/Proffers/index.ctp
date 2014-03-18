@@ -1,127 +1,176 @@
+<?php echo $this->Html->script('bootstrap/bootstrap-modal'); ?>
 <ol class="breadcrumb">
-  <li><?php echo $this->Html->link("Home", array('controller' => 'pages',  'action' => 'index')); ?></li>
-  <li class="active">Seguimiento a las Propuestas Comerciales</li>
+	<li>
+		<?php echo $this->Html->link("Home", array('controller'=> 'pages','action'    => 'index')); ?>
+	</li>
+	<li class="active">
+		Seguimiento a las Propuestas Comerciales
+	</li>
 </ol>
 
-<h3 class = "info">Seguimiento a las Propuestas Comerciales</h3>
+<h3 class = "info">
+	Seguimiento a las Propuestas Comerciales
+</h3>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					Cambiar el estado
+				</h4>
+			</div>
 
+			<div class="modal-body">
+				<?php echo $this->Form->create('Proffer',array('url' => array('action'=> 'state','class' => 'form-horizontal' ) ) ); ?>
+				<?php echo $this->Form->select('state',array('aprobado', 'rechazado', 'activo')); ?>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
 <div class="container well ">
 
 
 	<ul class="col-md-4 nav nav-pills nav-stacked ">
-	  <li class="active">
-	    <a><span class="badge pull-right"><?php echo  $total_Opp_seg ?></span>En Seguimiento</a>
-	  </li>
-	  <li class="active">
-	    <a><span class="badge pull-right"><?php echo  $total_Opp_cerrok ?></span>Efectivas</a>
-	  </li>
+		<li class="active">
+			<a>
+				<span class="badge pull-right">
+					<?php echo  $total_Opp_seg ?>
+				</span>En Seguimiento
+			</a>
+		</li>
+		<li class="active">
+			<a>
+				<span class="badge pull-right">
+					<?php echo  $total_Opp_cerrok ?>
+				</span>Efectivas
+			</a>
+		</li>
 
-	   <li class="active">
-	    <a><span class="badge pull-right"><?php echo  $total_Opp_cerr ?></span>No Efectivas</a>
-	  </li>
+		<li class="active">
+			<a>
+				<span class="badge pull-right">
+					<?php echo  $total_Opp_cerr ?>
+				</span>No Efectivas
+			</a>
+		</li>
 
-	  <li class="active">
-	    <a><span class="badge pull-right"><?php echo  $total_Proffer ?></span>Total Oportunidades de Negocio </a>
-	  </li>
+		<li class="active">
+			<a>
+				<span class="badge pull-right">
+					<?php echo  $total_Proffer ?>
+				</span>Total Oportunidades de Negocio
+			</a>
+		</li>
 	</ul>
 
 </div>
 
 
 <p>
-<?php 
+	<?php
 
-echo $this->Html->image("icon/btn_plus.png", array(
-		    "label" => "Crear nuevo usuario",
+	echo $this->Html->image("icon/btn_plus.png", array(
+			"label" => "Crear nuevo usuario",
 
-		    'height'=>'15',
-		    'width'=>'15',
-		    'url' => array('action' => 'add'),
+			'height'=>'15',
+			'width' =>'15',
+			'url'    => array('action'=> 'add'),
 
 		)).' Crear Nueva!';
-?>
+	?>
 </p>
 </br>
 
 
 
 <div class="table-responsive">
-  <table class="table table-bordered">
+	<table class="table table-bordered">
 
 		<tr >
-		<th class="headerlist" align="center" width = "10%" >Id</th>
-		<th class="headerlist" align="center" width = "10%" >Cliente</th>
-		<th class="headerlist" align="center" width = "40%" >Descripcion</th>		
-		<th class="headerlist" align="center" width = "10%" >Estado</th>
-		<th class="headerlist" align="center" width = "15%" >Fecha de Creación</th>
-		<td class="headerlist" width = "5%"colspan ="4" align ="center">Accion</td>
-		
+			<th class="headerlist" align="center" width = "10%" >
+				Id
+			</th>
+			<th class="headerlist" align="center" width = "10%" >
+				Cliente
+			</th>
+			<th class="headerlist" align="center" width = "40%" >
+				Descripcion
+			</th>
+			<th class="headerlist" align="center" width = "10%" >
+				Estado
+			</th>
+			<th class="headerlist" align="center" width = "15%" >
+				Fecha de Creación
+			</th>
+			<td class="headerlist" width = "5%"colspan ="4" align ="center">
+				Accion
+			</td>
+
 		</tr>
-		
-		<?php foreach ($Proffers as $Proffer): ?>
-		
+
+		<?php
+		foreach($Proffers as $Proffer): ?>
+
 		<tr>
-		<td><?php echo $Proffer['Proffer']['id']; ?></td>			
-		<td><?php echo $Proffer['Customer']['name']; ?></td>
-		<td><?php echo $this->Html->link($Proffer['Proffer']['description'], array('action' => 'view',$Proffer['Proffer']['id']));?></td>
-		<td><?php echo $Proffer['Proffer']['state']; ?></td>
-		<td><?php echo $Proffer['Proffer']['created']; ?></td>
-		
-		<td align="center">
-		<?php 
+			<td>
+				<?php echo $Proffer['Proffer']['id']; ?>
+			</td>
+			<td>
+				<?php echo $Proffer['Customer']['name']; ?>
+			</td>
+			<td>
+				<?php echo $this->Html->link($Proffer['Proffer']['description'], array('action'=> 'view',$Proffer['Proffer']['id']));?>
+			</td>
+			<td>
+				<?php echo $Proffer['Proffer']['state']; ?>
+			</td>
+			<td>
+				<?php echo $Proffer['Proffer']['created']; ?>
+			</td>
 
-		echo $this->Html->image("icon/btn_ok_w.png", array(
-		    "tittle" => "Anexar documento",
+			<td align="center">
+				<?php
 
-		    'height'=>'15',
-		    'width'=>'15',
-		    'url' => array('action' => 'state', $Proffer['Proffer']['id']),
-		));
+				echo $this->Html->image("icon/btn_ok_w.png", array(
+						"tittle"=> "Anexar documento",
 
-		?>
+						'height'=>'15',
+						'width' =>'15',
+						'url'    => array('action'=> 'state',$Proffer['Proffer']['id']),
+					));
 
-		</td>
+				?>
 
-		<td align="center">
-		<?php 
+			</td>
 
-		echo $this->Html->image("icon/new.png", array(
-		    "tittle" => "Anexar documento",
+			<td align="center">
+				<?php
 
-		    'height'=>'15',
-		    'width'=>'15',
-		    'url' => array('controller' => 'Files', 'action' => 'view', $Proffer['Proffer']['id']),
-		));
+				echo $this->Html->image("icon/edit.png", array(
+						"tittle"=> "Editar",
 
-		?>
+						'height'=>'15',
+						'width' =>'15',
+						'url'    => array('action'=> 'edit',$Proffer['Proffer']['id']),
+					));
 
-		</td>
-		
-		<td align="center">
-		<?php 
+				?>
+			</td>
+			<td align="center">
+				<?php
+				echo $this->Form->postLink(
+					$this->Html->image('icon/trash.png', array('alt'   => __('Effacer'),'height'=>'15',
+							'width' =>'15')), //le image
+					array('action'=> 'delete',$Proffer['Proffer']['id'] ), //le url
+					array('escape'=> false), //le escape
+					__('Esta seguro de borrar', $Proffer['Proffer']['id']) //le confirm
+				);
+				?>
+			</td>
 
-		echo $this->Html->image("icon/edit.png", array(
-		    "tittle" => "Editar",
-
-		    'height'=>'15',
-		    'width'=>'15',
-		    'url' => array('action' => 'edit', $Proffer['Proffer']['id']),
-		));
-
-		?>
-		</td>
-		<td align="center">
-		<?php 
-		echo $this->Form->postLink(
-			  $this->Html->image('icon/trash.png', array('alt' => __('Effacer'), 'height'=>'15',
-		    'width'=>'15')), //le image
-			  array('action' => 'delete',$Proffer['Proffer']['id'] ), //le url
-			  array('escape' => false), //le escape
-			  __('Esta seguro de borrar', $Proffer['Proffer']['id']) //le confirm
-			);
-		?>
-		</td>
-	
 		</tr>
 
 

@@ -16,7 +16,7 @@
       </div>
 	<!-- formulario para la subir los archivos(oculto hasta que se oprime el boton subir archivo) -->
       <div class="modal-body">
-      <?php echo $this->Form->create('File',array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data', 'action' => 'add')  ); ?>  
+      <?php echo $this->Form->create('File',array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data', 'controller' => 'Files', 'action' => 'add')  ); ?>  
            
       
       <?php echo $this->Form->input("customer", array( 'type' => 'hidden', 'value' =>  $Proffer['Customer']['name'] )); ?> 
