@@ -13,7 +13,7 @@ div.input {
 table.index_list tr th, table.index_list tr td{
 	padding: 0 15px 0 0;
 }
-
+.ui-inline-custom.ui-state-hover span { margin: -1px; }
 /* Form errors */
 form .error-message {
 	-moz-border-radius: none;

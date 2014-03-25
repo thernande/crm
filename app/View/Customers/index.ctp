@@ -3,8 +3,8 @@
 <?php  echo $this->Html->css('ui.multiselect');?>
 <?php   echo $this->Html->css('jquery-ui-1.9.2.custom');?>
 
-<?php echo $this->Html->script('jqGrid/jquery-1.7.2.min');?>
-<?php echo $this->Html->script('jqGrid/grid.locale-en');?>
+<?php echo $this->Html->script('jquery-1.7.2.min');?>
+<?php echo $this->Html->script('jqGrid/grid.locale-es');?>
 <?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
 <?php echo $this->Html->script('jquery-ui-1.9.2.custom.min');?>
 
@@ -59,19 +59,41 @@ echo $this->Html->link("Nuevo Cliente", array(
 
 
 <script type="text/javascript">
+var getColumnIndexByName = function(grid,columnName) {
+        var cm = grid.jqGrid('getGridParam','colModel'), i=0,l=cm.length;
+        for (; i<l; i+=1) {
+            if (cm[i].name===columnName) {
+                return i; // return the index
+            }
+        }
+        return -1;
+    };
 jQuery(document).ready(function(){
 	jQuery("#list").jqGrid({
    	url:'<?php echo $this->Html->url(array("controller" => "Customers", "action" => "showGrid")); ?>',
 	datatype: "json",
 	mtype: "GET",
-   	colNames:['id','Cliente','Telefono','Direccion','Estado','Fecha de Creacion'],
+   	colNames:['id','Cliente','Telefono','Direccion','Estado','Fecha de Creacion','Acciones'],
    	colModel:[
-		{name:'id',index:'id',width:15},
-   		{name:'name',index:'name'},
-   		{name:'phone',index:'phone'},
-   		{name:'dress',index:'dress'},
+   	   {name:'id',index:'id',hidden:true,width:10},
+   		{name:'name',index:'name',editable:true},
+   		{name:'phone',index:'phone',editable:true},
+   		{name:'dress',index:'dress',editable:true},
    		{name:'state',index:'state',width:50},
-   		{name:'created',index:'created'}
+   		{name:'created',index:'created'},
+   		{name: 'action', width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:false,delbutton:true,keys:true,delOptions:{
+       url:'<?php echo $this->Html->url(array("controller" => "Customers", "action" => "delete"));?>',
+        mtype: "POST",
+                      onclickSubmit :function(params, postdata) {
+                        params.url = '<?php echo $this->Html->url(array("controller" => "Customers", "action" => "delete"));?>'+'/'+postdata ;
+                      }
+        }
+       /* editOptions:{
+			click: function(e){
+     		   document.location.href = "customers/edit/" + $(e.target).closest("tr.jqgrow").attr("id");
+			}
+		}*/
+        }}
    	],
    	rowNum:10,
 	rowList : [5,10,15],
@@ -80,9 +102,36 @@ jQuery(document).ready(function(){
    	pager: jQuery('#page'),
    	sortname: 'id',
     sortorder: 'asc',
+    loadonce: true,
 	caption: "Administracion de Cliente",
 	height:"auto",
      autowidth: true,
+     loadComplete: function () {
+    var grid = $(this),
+        iCol = getColumnIndexByName(grid,'action'); // 'act' - name of the actions column
+    grid.children("tbody")
+        .children("tr.jqgrow")
+        .children("td:nth-child("+(iCol+1)+")")
+        .each(function() {
+            $("<div>",
+                {
+                    title: "edit",
+                    mouseover: function() {
+                        $(this).addClass('ui-state-hover');
+                    },
+                    mouseout: function() {
+                        $(this).removeClass('ui-state-hover');
+                    },
+                    click: function(e) {
+                        document.location.href = "customers/edit/"+$(e.target).closest("tr.jqgrow").attr("id");
+                    }
+                }
+              ).css({"margin-left": "5px", float:"left"})
+               .addClass("ui-pg-div ui-inline-custom")
+               .append('<span class="ui-icon ui-icon-link"></span>')
+               .appendTo($(this).children("div"));
+    });
+},
      viewrecords: true,
      ondblClickRow: function (rowid) {
         var rowData = $(this).getRowData(rowid);

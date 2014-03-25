@@ -248,12 +248,12 @@ function showGrid()
 	
     //fetch only pure data avoiding unnecessay loading of related/associated data
             $this->Customer->recursive=-1;
-	if(!empty($this->request->query['filters'])){
-		$rule=$this->request->query['filters']['rule'];
-		$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'order by' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'] => $rule['data'].'%')));
+	if(!empty($this->request->data['filters'])){
+		$rule=$this->request->data['filters']['rule'];
+		$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'ORDER =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'].' LIKE = ' => $rule['data'].'%')));
 	}
 else{
-	$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'order by' => $sidx.' '.$sord, 'limit' => $start,$limit));
+	$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit));
 }
 
 
@@ -261,13 +261,12 @@ else{
           // $resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'order' => $sort_range,'limit' => $limit_range)); 
 
             //setting the response object
-           // print_r ($resultado);
-           // exit();
-            
+
+            $responce=new stdClass();
             $responce->page=$page;
             $responce->total_pages=$total_pages;
             $responce->records=$count;
-            //$res=array('rows' => array(''=>array('id','cell')));
+
 			$i=0;
 			            
             foreach($resultado as $row)
