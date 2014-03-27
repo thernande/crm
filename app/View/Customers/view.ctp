@@ -1,5 +1,12 @@
 <?php echo $this->Html->script('bootstrap/bootstrap-tab'); ?>
 <?php echo $this->Html->script('bootstrap/bootstrap-modal'); ?>
+<?php echo $this->Html->css('ui.jqgrid'); ?>
+<?php echo $this->Html->css('ui.multiselect');?>
+<?php echo $this->Html->css('jquery-ui-1.9.2.custom');?>
+<?php echo $this->Html->script('jquery-1.7.2.min');?>
+<?php echo $this->Html->script('jqGrid/grid.locale-es');?>
+<?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
+<?php echo $this->Html->script('jquery-ui-1.9.2.custom.min');?>
 <ol class="breadcrumb">
   <li><?php echo $this->Html->link("Home", array('controller' => 'admin',  'action' => 'index')); ?></li>
    <li><?php echo $this->Html->link("Clientes", array('controller' => 'Customers',  'action' => 'index')); ?></li>
@@ -17,31 +24,32 @@
       </div>
 
       <div class="modal-body">
-      <?php echo $this->Form->create(null,array( 'url' => array('controller' => 'Contacts', 'action' => 'add'), 'class' => 'form-horizontal' )  ); ?>  
+      <?php echo $this->Form->create('Contact',array( 'url' => array('controller' => 'contacts', 'action' => 'add'), 'class' => 'form-horizontal' )  ); ?>  
            
       
-      <?php echo $this->Form->input("Contact.customer_id", array( 'type' => 'hidden', 'value' =>  $customer_id )); ?> 
+      <?php echo $this->Form->input('customer_id', array( 'type' => 'hidden', 'value' =>  $customer_id )); ?> 
+      
       <div class="form-group">
         <label for="name" class="col-lg-2 control-label">Nombre</label>
         <div class="col-lg-10">
-         <?php echo $this->Form->input('Contact.name', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+         <?php echo $this->Form->input('name', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
         </div>
       </div>
       
       <div class="form-group">
         <label for="name" class="col-lg-2 control-label">Telefono</label>
         <div class="col-lg-10">
-         <?php echo $this->Form->input('Contact.phone', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+         <?php echo $this->Form->input('phone', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label for="name" class="col-lg-2 control-label">Email</label>
         <div class="col-lg-10">
-         <?php echo $this->Form->input('Contact.email', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+         <?php echo $this->Form->input('email', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
         </div>
       </div>
-
+<?php echo $this->Form->input('state', array( 'type' => 'hidden', 'value' =>  'Activo' )); ?>
         <div class="form-group">
           <div class="col-lg-offset-2 col-lg-10">
               <?php echo $this->Form->end(__('Salvar')); ?>
@@ -133,13 +141,16 @@
                       <h2><span class="label label-warning">Contactos</span></h2>
 
                         <br>
-                        <a href="#myModal" role="button" class="btn" data-toggle="modal" ><?php echo $this->Html->image("icon/btn_plus.png")?> Crear Nuevo Contacto</a>
-                        </br>
+                        <a href="#myModal" role="button" class="btn btn-default" data-toggle="modal" > Crear Nuevo Contacto</a>
+                        <br>
                         
                         
-                        </br>
-           
-                        <table class="table table-bordered">
+                        <br>
+           				<div id="table">
+							<table id="list"></table>
+							<div id="page"></div>
+  						</div>
+                      <!-- <table class="table table-bordered">
 
                         <tr >
                         <th class="headerlist" align="center" width = "40%" >Nombre</th>
@@ -167,7 +178,7 @@
 
                                   'height'=>'15',
                                   'width'=>'15',
-                                  'url' => array('action' => 'edit', $Contact['Contact']['id']),
+                                  'url' => array('controller' => 'Contacts','action' => 'edit', $Contact['Contact']['id']),
                               ));
 
                               ?>
@@ -186,7 +197,11 @@
                               </tr>
                               <?php endforeach; ?>
                           
-                            </table>
+                            </table> -->
+                            
+
+
+
         </div>
  
 
@@ -203,8 +218,45 @@
 </div> <!-- container -->
 
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $('#tabs').tab();
+    jQuery(document).ready(function () {
+        
+        $("#list").jqGrid({
+        	url:'<?php echo $this->Html->url(array("controller" => "contacts", "action" => "showGridContact", $Customer["Customer"]["id"])); ?>',
+        	datatype:"json",
+        	mtype:"GET",
+        	colNames:['id', 'Nombre', 'Telefono', 'Email', 'Estado', 'Fecha de Creacion', 'Acciones'],
+        	colModel:[
+        		{name:'id',index:'id',hidden:true,width:10},
+   				{name:'name',index:'name',editable:true},
+   				{name:'phone',index:'phone',editable:true},
+   				{name:'email',index:'email',editable:true},
+   				{name:'state',index:'state',width:50},
+   				{name:'created',index:'created'},
+   				{name: 'action', width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:true,delbutton:true,keys:true,delOptions:{
+       url:'<?php echo $this->Html->url(array("controller" => "Contacts", "action" => "delete"));?>',
+        mtype: "POST",
+                      onclickSubmit :function(params, postdata) {
+                        params.url = '<?php echo $this->Html->url(array("controller" => "Contacts", "action" => "delete"));?>'+'/'+postdata ;
+                      }
+        }          
+              
+        }}
+        	],
+        rowNum:10,
+		rowList : [5,10,15],
+		editurl:'<?php echo $this->Html->url(array("controller" => "Contacts", "action" => "edit"));?>',
+		rownumWidth: 40,
+   		pager: jQuery('#page'),
+   		sortname: 'id',
+   	 	sortorder: 'asc',
+    	loadonce: true,
+		caption: "Contactos",
+		height:"auto",
+		autowidth: true,
+        
+		viewrecords: true
+        });
+        jQuery("#list").navGrid("#page",{del:true,add:false,edit:false,search:false});
     });
 
 

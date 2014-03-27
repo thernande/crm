@@ -55,15 +55,7 @@ class CustomersController extends AppController {
         $this->set('Customer', $this->Customer->read(null, $id));
 
 
-            //load datagrid contacts
-            $this->loadModel('Contact');
-            $this->Contact->recursive = 0;
-            $this->set('Contacts', $this->paginate());
-            $this->set('Contacts', $this->Contact->find('all',array(
-                'conditions' => array('customer_id = ' => $id),
-                'order' => array('Contact.name' => 'asc'))
-            ));
-            $this->set(compact('contacts'));
+            
             
             $this->set('customer_id',$id);
 

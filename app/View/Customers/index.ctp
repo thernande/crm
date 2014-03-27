@@ -1,8 +1,6 @@
-<?php 
-  echo $this->Html->css('ui.jqgrid'); ?>
+<?php echo $this->Html->css('ui.jqgrid'); ?>
 <?php  echo $this->Html->css('ui.multiselect');?>
 <?php   echo $this->Html->css('jquery-ui-1.9.2.custom');?>
-
 <?php echo $this->Html->script('jquery-1.7.2.min');?>
 <?php echo $this->Html->script('jqGrid/grid.locale-es');?>
 <?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
@@ -68,7 +66,7 @@ var getColumnIndexByName = function(grid,columnName) {
         }
         return -1;
     };
-jQuery(document).ready(function(){
+jQuery(document).ready(function($){
 	jQuery("#list").jqGrid({
    	url:'<?php echo $this->Html->url(array("controller" => "Customers", "action" => "showGrid")); ?>',
 	datatype: "json",
@@ -105,7 +103,7 @@ jQuery(document).ready(function(){
     loadonce: true,
 	caption: "Administracion de Cliente",
 	height:"auto",
-     autowidth: true,
+     autowidth:true,
      loadComplete: function () {
     var grid = $(this),
         iCol = getColumnIndexByName(grid,'action'); // 'act' - name of the actions column
@@ -115,7 +113,7 @@ jQuery(document).ready(function(){
         .each(function() {
             $("<div>",
                 {
-                    title: "edit",
+                    title: "editar cliente seleccionado",
                     mouseover: function() {
                         $(this).addClass('ui-state-hover');
                     },
@@ -128,7 +126,7 @@ jQuery(document).ready(function(){
                 }
               ).css({"margin-left": "5px", float:"left"})
                .addClass("ui-pg-div ui-inline-custom")
-               .append('<span class="ui-icon ui-icon-link"></span>')
+               .append('<span class="ui-icon ui-icon-pencil"></span>')
                .appendTo($(this).children("div"));
     });
 },
