@@ -1,4 +1,11 @@
 <?php echo $this->Html->script('bootstrap/bootstrap-modal'); ?>
+<?php echo $this->Html->css('ui.jqgrid'); ?>
+<?php  echo $this->Html->css('ui.multiselect');?>
+<?php   echo $this->Html->css('jquery-ui-1.9.2.custom');?>
+<?php echo $this->Html->script('jquery-1.7.2.min');?>
+<?php echo $this->Html->script('jqGrid/grid.locale-es');?>
+<?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
+<?php echo $this->Html->script('jquery-ui-1.9.2.custom.min');?>
 <ol class="breadcrumb">
 	<li>
 		<?php echo $this->Html->link("Home", array('controller'=> 'pages','action'    => 'index')); ?>
@@ -72,22 +79,22 @@
 <p>
 	<?php
 
-	echo $this->Html->image("icon/btn_plus.png", array(
-			"label" => "Crear nuevo usuario",
-
+	echo $this->Html->link("Crear Nueva Propuesta", array(
+			'action' => 'add'), array(
 			'height'=>'15',
 			'width' =>'15',
 			'url'    => array('action'=> 'add'),
-
-		)).' Crear Nueva!';
+			'class' => 'btn btn-default',
+			'role' => 'button'
+		));
 	?>
 </p>
 </br>
 
 
 
-<div class="table-responsive">
-	<table class="table table-bordered">
+  <div class="table-responsive">
+	<!--<table class="table table-bordered">
 
 		<tr >
 			<th class="headerlist" align="center" width = "10%" >
@@ -176,6 +183,87 @@
 
 		<?php endforeach; ?>
 	</table>
+	
+	-->
+	<table id="list"></table>
+	<div id="page"></div>
+	
 </div>
-
-
+<script type="text/javascript">
+var getColumnIndexByName = function(grid,columnName) {
+        var cm = grid.jqGrid('getGridParam','colModel'), i=0,l=cm.length;
+        for (; i<l; i+=1) {
+            if (cm[i].name===columnName) {
+                return i; // return the index
+            }
+        }
+        return -1;
+    };
+jQuery(document).ready(function($){
+	jQuery("#list").jqGrid({
+   	url:'<?php echo $this->Html->url(array("controller" => "Proffers", "action" => "showGridProffer")); ?>',
+	datatype: "json",
+	mtype: "GET",
+   	colNames:['id','Cliente','Descripcion','Estado','Fecha de Expiracion','Acciones'],
+   	colModel:[
+   	   {name:'id',index:'id',hidden:true,width:10},
+   		{name:'name',index:'name',editable:true},
+   		{name:'description',index:'description',editable:true},
+   		{name:'state',index:'state',width:50},
+   		{name:'expired',index:'expired'},
+   		{name: 'action', width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:false,delbutton:true,keys:true,delOptions:{
+       url:'<?php echo $this->Html->url(array("controller" => "Proffers", "action" => "delete"));?>',
+        mtype: "POST",
+                      onclickSubmit :function(params, postdata) {
+                        params.url = '<?php echo $this->Html->url(array("controller" => "Proffers", "action" => "delete"));?>'+'/'+postdata ;
+                      }
+        }
+        }}
+   	],
+   	rowNum:10,
+	rowList : [5,10,15],
+	
+	rownumWidth: 40,
+   	pager: jQuery('#page'),
+   	sortname: 'id',
+    sortorder: 'asc',
+    loadonce: true,
+	caption: "Administracion de Propuestas",
+	height:"auto",
+     autowidth:true,
+     loadComplete: function () {
+    var grid = $(this),
+        iCol = getColumnIndexByName(grid,'action'); // 'act' - name of the actions column
+    grid.children("tbody")
+        .children("tr.jqgrow")
+        .children("td:nth-child("+(iCol+1)+")")
+        .each(function() {
+            $("<div>",
+                {
+                    title: "editar la propuesta seleccionado",
+                    mouseover: function() {
+                        $(this).addClass('ui-state-hover');
+                    },
+                    mouseout: function() {
+                        $(this).removeClass('ui-state-hover');
+                    },
+                    click: function(e) {
+                        document.location.href = "proffers/edit/"+$(e.target).closest("tr.jqgrow").attr("id");
+                    }
+                }
+              ).css({"margin-left": "5px", float:"left"})
+               .addClass("ui-pg-div ui-inline-custom")
+               .append('<span class="ui-icon ui-icon-pencil"></span>')
+               .appendTo($(this).children("div"));
+    });
+},
+     viewrecords: true,
+     ondblClickRow: function (rowid) {
+        var rowData = $(this).getRowData(rowid);
+        document.location.href = "proffers/view/" + rowData['id'];
+    }
+	});
+    jQuery("#list").navGrid("#page",{del:true,add:false,edit:true,search:false});	
+    jQuery("#list").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
+    });
+</script>

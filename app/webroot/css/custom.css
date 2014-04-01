@@ -344,3 +344,7 @@ body.body_offset {
   width: 16px;
   height: 16px;
 }
+
+a:link{
+	text-decoration: underline;
+}

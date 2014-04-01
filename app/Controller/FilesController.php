@@ -91,6 +91,91 @@ public $helpers = array('Html','Form');
 		'proffer_id =' => $id ))));
 	}
 	
+function showGridFile($id=null)
+        {
 
+    // get how many rows we want to have into the grid - rowNum parameter in the grid
+   
+    $limit = $this->request->data['rows'];
+
+    // get index row - i.e. user click to sort. At first time sortname parameter -
+    // after that the index from colModel
+    $sidx = $this->request->data['sidx'];
+
+    // sorting order - at first time sortorder
+    $sord = $this->request->data['sord'];
+
+    $page = $this->request->data['page'];
+
+
+    // if we not pass at first time index use the first column for the index or what you want
+    if( !$sidx ) $sidx = 1;
+            //calculate no of rows from query
+            $row=$this->File->find('count', array('conditions' => array('proffer_id' => $id)));
+            $count = $row;
+
+    // calculate the total pages for the query
+    if( $count > 0 )
+    {
+        $total_pages = ceil($count / $limit);
+    }
+    else
+    {
+        $total_pages = 0;
+    }
+
+    // if for some reasons the requested page is greater than the total
+    // set the requested page to total page
+    if( $page > $total_pages ) $page = $total_pages;
+
+    // calculate the starting position of the rows
+    $start = $limit * $page - $limit;
+
+    // if for some reasons start position is negative set it to 0
+    // typical case is that the user type 0 for the requested page
+    if( $start < 0 ) $start = 0;
+	
+    //fetch only pure data avoiding unnecessay loading of related/associated data
+            $this->File->recursive=-1;
+	
+
+	$resultado=$this->File->find('all',array('fields' => array('id','name', 'url', 'description','version'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array('proffer_id' => $id)));
+
+
+
+            
+          // $resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'order' => $sort_range,'limit' => $limit_range)); 
+
+            //setting the response object
+
+            $responce=new stdClass();
+            $responce->page=$page;
+            $responce->total_pages=$total_pages;
+            $responce->records=$count;
+
+			$i=0;
+			            
+            foreach($resultado as $row)
+            {
+            	
+                $responce->rows[$i]['id']=$row['File']['id'];
+                $responce->rows[$i]['cell']=array($row['File']['id'],$row['File']['url'], $row['File']['name'],$row['File']['description'],$row['File']['version']);
+                
+                $i++;
+            }
+
+           echo json_encode($responce);
+
+            exit();
+
+        }
+        
+        
+        
+        function showUrl(){
+			$req=$this->request->data;
+			echo $req;
+			exit();
+		}
 }
 ?>

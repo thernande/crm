@@ -1,6 +1,12 @@
 <?php echo $this->Html->script('bootstrap/bootstrap-tab'); ?>
 <?php echo $this->Html->script('bootstrap/bootstrap-modal'); ?>
-
+<?php echo $this->Html->css('ui.jqgrid'); ?>
+<?php  echo $this->Html->css('ui.multiselect');?>
+<?php   echo $this->Html->css('jquery-ui-1.9.2.custom');?>
+<?php echo $this->Html->script('jquery-1.7.2.min');?>
+<?php echo $this->Html->script('jqGrid/grid.locale-es');?>
+<?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
+<?php echo $this->Html->script('jquery-ui-1.9.2.custom.min');?>
 <ol class="breadcrumb">
   <li><?php echo $this->Html->link("Home", array('controller' => 'admin',  'action' => 'index')); ?></li>
    <li><?php echo $this->Html->link("Propuestas de Negocio", array('controller' => 'Proffers',  'action' => 'index')); ?></li>
@@ -112,8 +118,11 @@
                         
                         <br>
                         </br>
+                        
+                        <table id="list"></table>
+                        <div id="page"></div>
            
-                        <table class="table table-bordered">
+                       <!-- <table class="table table-bordered">
 
                         <tr >
                         <th class="headerlist" align="center" width = "30%" >archivo</th>
@@ -142,7 +151,7 @@
                               );?></td>
                               </tr>
                               <?php endforeach;    ?>
-                        </table>
+                        </table> -->
 		</div>
         </div>
  
@@ -151,10 +160,52 @@
 	</div>
 
 </div> <!-- container -->
+<?php $route; ?>
 <script type="text/javascript">
+
+
+	function LinkFormatter(cellvalue, options, rowObject) {
+		return '<a href="http:/comercial'+rowObject[1]+'">'+cellvalue+'</a>';
+		}
     jQuery(document).ready(function ($) {
-        $('#tabs').tab();
+        $("#list").jqGrid({
+        	url:'<?php echo $this->Html->url(array("controller" => "files", "action" => "showGridFile", $Proffer["Proffer"]["id"])); ?>',
+        	datatype:"json",
+        	mtype:"POST",
+        	colNames:['id', 'url', 'Archivo', 'Descripcion', 'version', 'Acciones'],
+        	colModel:[
+        		{name:'id',index:'id',hidden:true,width:10},
+        		{name:'url',index:'url',hidden:true,width:10},
+   				{name:'name',index:'name', formatter:LinkFormatter},
+   				{name:'description',index:'description'},
+   				{name:'version',index:'version'},
+   				{name: 'action', width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:false,delbutton:true,keys:true,delOptions:{
+       url:'<?php echo $this->Html->url(array("controller" => "Files", "action" => "delete"));?>',
+        mtype: "POST",
+                      onclickSubmit :function(params, postdata) {
+                        params.url = '<?php echo $this->Html->url(array("controller" => "files", "action" => "delete"));?>'+'/'+postdata ;
+                      }
+        }          
+              
+        }}
+        	],
+        rowNum:10,
+		rowList : [5,10,15],
+		rownumWidth: 40,
+   		pager: jQuery('#page'),
+   		sortname: 'id',
+   	 	sortorder: 'asc',
+    	loadonce: true,
+		caption: "Archivos",
+		height:"auto",
+		width: 1000,
+        
+		viewrecords: true
+        });
+		
+        jQuery("#list").navGrid("#page",{del:true,add:false,edit:false,search:false});
     });
+
 
 
 </script>  

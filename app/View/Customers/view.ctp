@@ -147,7 +147,7 @@
                         
                         <br>
            				<div id="table">
-							<table id="list"></table>
+							<table id="list" width="100%"></table>
 							<div id="page"></div>
   						</div>
                       <!-- <table class="table table-bordered">
