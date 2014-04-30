@@ -185,8 +185,10 @@
 	</table>
 	
 	-->
-	<table id="list"></table>
+	<div id="grid-container">
+	<table id="list" class="table"></table>
 	<div id="page"></div>
+	</div>
 	
 </div>
 <script type="text/javascript">
@@ -199,6 +201,9 @@ var getColumnIndexByName = function(grid,columnName) {
         }
         return -1;
     };
+    
+
+
 jQuery(document).ready(function($){
 	jQuery("#list").jqGrid({
    	url:'<?php echo $this->Html->url(array("controller" => "Proffers", "action" => "showGridProffer")); ?>',
@@ -230,7 +235,7 @@ jQuery(document).ready(function($){
     loadonce: true,
 	caption: "Administracion de Propuestas",
 	height:"auto",
-     autowidth:true,
+     autowidth:true,     
      loadComplete: function () {
     var grid = $(this),
         iCol = getColumnIndexByName(grid,'action'); // 'act' - name of the actions column
@@ -263,7 +268,13 @@ jQuery(document).ready(function($){
         document.location.href = "proffers/view/" + rowData['id'];
     }
 	});
+	$(window).bind('resize', function() {
+    $("#list").setGridWidth(($(window).width())-30);
+}).trigger('resize');
     jQuery("#list").navGrid("#page",{del:true,add:false,edit:true,search:false});	
     jQuery("#list").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
     });
+    
+    
+
 </script>

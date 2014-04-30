@@ -38,22 +38,10 @@ class ProffersController extends AppController {
 
     public function view($id = null) {
         $this->Proffer->id = $id;
-        $this->loadModel('File');
-		$this->set('Files', $this->File->find('all', array(
-		'conditions' => array(
-		'proffer_id =' => $id ))));
         if (!$this->Proffer->exists()) {
             throw new NotFoundException(__('Registro Invalido'));
         }
         $this->set('Proffer', $this->Proffer->read(null, $id));
-		$this->loadModel('Contact');
-            $this->Contact->recursive = 0;
-            $this->set('Contacts', $this->paginate());
-            $this->set('Contacts', $this->Contact->find('all',array(
-                'conditions' => array('customer_id = ' => $id),
-                'order' => array('Contact.name' => 'asc'))
-            ));
-            $this->set(compact('contacts'));
             
             $this->set('customer_id',$id);
 

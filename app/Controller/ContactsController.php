@@ -115,8 +115,8 @@ class ContactsController extends AppController {
         }
 
         if ($this->Contact->save($this->request->data)) {
-            $this->Session->setFlash(__('El contacto ha sido eliminado !'.print_r($id_customer[0])));
-
+            $this->Session->setFlash(__('El contacto ha sido eliminado !'));
+			
             $this->redirect(array('controller' => 'Customers', 'action'=>'index'));            
             //$this->redirect(array('action' => 'index'));
         }
@@ -215,13 +215,13 @@ function showGridContact($id=null)
     if( $start < 0 ) $start = 0;
 	
     //fetch only pure data avoiding unnecessay loading of related/associated data
-            $this->Contact->recursive=-1;
+            $this->Contact->recursive=2;
 	if(!empty($this->request->query['filters'])){
 		$rule=$this->request->query['filters']['rule'];
-		$resultado=$this->Contact->find('all',array('fields' => array('id','name','phone','email','state','created'),'ORDER =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'].' LIKE = ' => $rule['data'].'%', 'customer_id' => $id)));
+		$resultado=$this->Contact->find('all',array('fields' => array('Contact.id','Contact.name','Contact.phone','Contact.celphone','Contact.email','Contact.line','Contact.position','Contact.state', 'User.name', 'Contact.created','Contact.modified'),'ORDER =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'].' LIKE = ' => $rule['data'].'%', 'customer_id' => $id)));
 	}
 else{
-	$resultado=$this->Contact->find('all',array('fields' => array('id','name','phone','email','state','created'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array('customer_id' => $id)));
+	$resultado=$this->Contact->find('all',array('fields' => array('Contact.id','Contact.name','Contact.phone','Contact.celphone','Contact.email','Contact.line','Contact.position','Contact.state', 'User.name', 'Contact.created','Contact.modified'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array('customer_id' => $id)));
 }
 
 
@@ -241,7 +241,7 @@ else{
             {
             	
                 $responce->rows[$i]['id']=$row['Contact']['id'];
-                $responce->rows[$i]['cell']=array($row['Contact']['id'],$row['Contact']['name'],$row['Contact']['phone'],$row['Contact']['email'],$row['Contact']['state'],$row['Contact']['created']);
+                $responce->rows[$i]['cell']=array($row['Contact']['id'],$row['Contact']['name'],$row['Contact']['phone'], $row['Contact']['celphone'],$row['Contact']['email'],$row['Contact']['line'], $row['Contact']['position'],$row['Contact']['state'],$row['User']['name'],$row['Contact']['created'],$row['Contact']['modified']);
                 
                 $i++;
             }

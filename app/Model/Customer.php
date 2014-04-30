@@ -54,14 +54,6 @@ class Customer extends AppModel {
         'rule' => 'notEmpty',
         'message' => 'Ingrese el mombre del cliente'
         ),
-        'phone_1' => array(
-        'rule' => 'notEmpty',
-        'message' => 'Ingrese el numero telefonico de contacto'
-        ),
-        'email' => array(
-        'rule' => 'email',
-        'message' => 'Ingrese el email'
-        ),
         'dress' => array(
         'rule' => 'notEmpty',
         'message' => 'Ingrese la dirección del cliente'

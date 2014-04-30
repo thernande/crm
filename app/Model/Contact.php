@@ -12,6 +12,14 @@ class Contact extends AppModel {
             'foreignKey' => 'customer_id',
 
 
+        ),
+        
+        'User' => array(
+            'className' => 'User',
+            'dependent' => true,
+            'foreignKey' => 'user_id',
+
+
         ),                  
 
     );

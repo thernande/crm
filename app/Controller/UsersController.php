@@ -30,7 +30,7 @@ class UsersController extends AppController {
 
 
     public $helpers = array('Html','Form');
-    public $components = array('Session','Acl');
+    public $components = array('Session','Acl','Cookie');
     public $name = 'Users';
 
 
@@ -47,7 +47,9 @@ class UsersController extends AppController {
 
          public function login() {
         if ($this->request->is('post')) {
+        	$this->Cookie->write('user',$this->request->data['User']['username']);
             if ($this->Auth->login()) {
+            	
                 $this->redirect($this->Auth->redirect());
             } else {
                 $this->Session->setFlash(__('Invalid username or password, try again'));

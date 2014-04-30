@@ -4,16 +4,15 @@ class CustomersController extends AppController {
    
     
 
-    public $helpers = array('Html','Form', 'Js');
-    public $components = array('Session', 'Paginator', 'RequestHandler');
+    public $helpers = array('Html','Form', 'Js', 'PhpExcel');
+    public $components = array('Session', 'Paginator', 'RequestHandler','Cookie', 'PhpExcel');
     public $name = 'Customers';
-   
-
 
 
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('add');
+        $this->Auth->allow('showGrid');
 
 
 
@@ -30,7 +29,7 @@ class CustomersController extends AppController {
                'order' => array('name' => 'asc'))
     ));
     $this->set(compact('Municipalities'));
-
+	
 
     }
 
@@ -69,20 +68,11 @@ class CustomersController extends AppController {
     if (!empty($this->request->data)) {
 
          $this->request->data['Customer']['state'] =   'Activo' ;
+         
          $Customer = $this->Customer->save($this->request->data);
 
        
                     if (!empty($Customer)) {
-                    $this->request->data['Contact']['customer_id'] = $this->Customer->id;
-
-
-                    $phone = $this->request->data['Customer']['phone'];
-                    $this->request->data['Contact']['phone'] = $phone;  
-                    
-                    $email = $this->request->data['Customer']['email'];
-                    $this->request->data['Contact']['email'] = $email; 
-
-                    $this->request->data['Contact']['state'] =   'Activo' ;
 					//crear directorio del cliente
 					$serv = WWW_ROOT.'/files/';
 
@@ -93,10 +83,8 @@ class CustomersController extends AppController {
 					}
 					//termina la creacion del archivo
 
-                    $this->Customer->Contact->save($this->request->data);
                     $this->Session->setFlash(__('El Cliente ha sido salvado'));
                     $this->redirect(array('action' => 'index'));
-                    
                     
                     }
                     else
@@ -107,35 +95,25 @@ class CustomersController extends AppController {
         }
 
 
-    public function edit($id = null) {
-        $this->Customer->id = $id;
-
-         //load datagrid contacts
-            $this->loadModel('Contact');
-            $this->Contact->recursive = 0;
-            $this->set('Contacts', $this->paginate());
-            $this->set('Contacts', $this->Contact->find('all',array(
-                'conditions' => array('customer_id = ' => $id),
-                'order' => array('Contact.name' => 'asc'))
-            ));
-            $this->set(compact('contacts'));
-            
-            $this->set('customer_id',$id);
-            
+    public function edit() {
+        $this->Customer->id = $this->request->data['id'];
+        $fecha=date("Y-m-d");
+		$this->request->data['modified']= $fecha;
+		$user=$this->Cookie->read('user');
+		
+		$this->request->data['log']= $user;
+		$datos=$this->request->data;
         if (!$this->Customer->exists()) {
             throw new NotFoundException(__('Cliente Invalido'));
         }
-        if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Customer->save($this->request->data)) {
                 $this->Session->setFlash(__('El Cliente ha sido salvado'));
+                exit();
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('El Cliente no pudo ser salvado.  Favor, intente nuevamente.'));
             }
-        } else {
-            $this->request->data = $this->Customer->read(null, $id);
-            unset($this->request->data['Customer']['password']);
-        }
+
     }
 
     public function delete($id = null) {
@@ -153,7 +131,14 @@ class CustomersController extends AppController {
         $this->Session->setFlash(__('El cliente no fue eliminado'));
         $this->redirect(array('action' => 'index'));
     }  
-
+    
+    
+    
+    
+    
+  
+  
+  
 
 
         public function login() {
@@ -242,10 +227,10 @@ function showGrid()
             $this->Customer->recursive=-1;
 	if(!empty($this->request->data['filters'])){
 		$rule=$this->request->data['filters']['rule'];
-		$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'ORDER =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'].' LIKE = ' => $rule['data'].'%')));
+		$resultado=$this->Customer->find('all',array('fields' => array('id','nit','name','dress','state','created', 'modified','log'),'ORDER =' => $sidx.' '.$sord, 'limit' => $start,$limit, 'conditions' => array($rule['field'].' LIKE = ' => $rule['data'].'%')));
 	}
 else{
-	$resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit));
+	$resultado=$this->Customer->find('all',array('fields' => array('id','nit','name', 'dress', 'state','created', 'modified','log'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit));
 }
 
 
@@ -253,8 +238,8 @@ else{
           // $resultado=$this->Customer->find('all',array('fields' => array('id','name','phone','dress','state','created'),'order' => $sort_range,'limit' => $limit_range)); 
 
             //setting the response object
-
-            $responce=new stdClass();
+			
+            
             $responce->page=$page;
             $responce->total_pages=$total_pages;
             $responce->records=$count;
@@ -265,11 +250,10 @@ else{
             {
             	
                 $responce->rows[$i]['id']=$row['Customer']['id'];
-                $responce->rows[$i]['cell']=array($row['Customer']['id'],$row['Customer']['name'],$row['Customer']['phone'],$row['Customer']['dress'],$row['Customer']['state'],$row['Customer']['created']);
+                $responce->rows[$i]['cell']=array($row['Customer']['id'],$row['Customer']['nit'],$row['Customer']['name'],$row['Customer']['dress'],$row['Customer']['state'],$row['Customer']['created'], $row['Customer']['modified'], $row['Customer']['log']);
                 
                 $i++;
             }
-
            echo json_encode($responce);
 
             exit();
@@ -277,7 +261,34 @@ else{
         }
 
 
+		public function export(){
 
+			$limit = $this->request->query['num'];
+
+    	$sidx = $this->request->query['id'];
+    	$sord = $this->request->query['or'];
+    	$page = $this->request->query['pag'];
+    	
+    	$start = $limit * $page - $limit;
+    	$resultado=$this->Customer->find('all',array('fields' => array('id','nit','name', 'dress', 'state','created', 'modified'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit));
+    	$this->set('customer', $resultado);
+    }
+
+
+
+
+		
+		public function get_cities_by_municipality($id = null) {
+    
+   		 	$cities = $this->City->find('all', array('conditions' => array('cities.municipality_id =' => $id), 'recursive' => 3));
+    		$returnCities = array();
+    		foreach ($cities as $city) {
+    		 	$returnCities[$city['City']['id']] = "{$city['City']['name']}";
+    		}	
+    
+    		return $returnCities;
+
+  		}
 
 
  

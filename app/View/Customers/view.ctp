@@ -42,6 +42,13 @@
          <?php echo $this->Form->input('phone', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
         </div>
       </div>
+      
+      <div class="form-group">
+        <label for="name" class="col-lg-2 control-label">Celular</label>
+        <div class="col-lg-10">
+         <?php echo $this->Form->input('celphone', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+        </div>
+      </div>
 
       <div class="form-group">
         <label for="name" class="col-lg-2 control-label">Email</label>
@@ -49,6 +56,32 @@
          <?php echo $this->Form->input('email', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
         </div>
       </div>
+      
+      <div class="form-group">
+        <label for="name" class="col-lg-2 control-label">Linea de Negocio</label>
+        <div class="col-lg-10">
+         <?php echo $this->Form->input('line', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="name" class="col-lg-2 control-label">Cargo</label>
+        <div class="col-lg-10">
+         <?php echo $this->Form->input('position', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+        </div>
+      </div>
+      
+      <div class="form-group">
+    <label for="name" class="col-lg-2 control-label">Comercial </label>
+    <div class="col-lg-10">
+    <?php
+
+     echo $this->Form->input("Contacts.user_id", array('label' => false, 'options' => $Users, 'empty' => '-- Seleccione el funcionario responsable --')); 
+    
+     ?>  
+    </div>
+  </div>
+      
 <?php echo $this->Form->input('state', array( 'type' => 'hidden', 'value' =>  'Activo' )); ?>
         <div class="form-group">
           <div class="col-lg-offset-2 col-lg-10">
@@ -86,17 +119,8 @@
         <!-- tab 1-->
         <div class="tab-pane active " id="data">
         
-        <h2><span class="label label-warning">Datos </span></h2>      
-           <div class="form-group">
-           <label for="" class="control-label">Nombre : </label>
-           <?php echo $Customer['Customer']['name'] ?>
-          </div>
+        <h2><span class="label label-warning"><?php echo $Customer['Customer']['name'] ?> </span></h2>      
 
-
-        <div class="form-group">
-          <label for="" class="control-label">Telefonos:</label>
-          <?php echo $Customer['Customer']['phone'] ?>
-        </div>
 
         <div class="form-group">
           <label for="" class="control-label">Dirección : </label>
@@ -108,20 +132,22 @@
           <?php echo $Customer['Municipality']['name'] ?>
         </div> 
 
-        <div class="form-group">
-          <label for="" class="control-label">Email : </label>
-          <?php echo $Customer['Customer']['email'] ?>
-        </div> 
 
         <div class="form-group">
           <label for="" class="control-label">Estado : </label>
           <?php echo $Customer['Customer']['state'] ?>
         </div> 
-
+        
         <div class="form-group">
-          <label for="" class="control-label">Funcionario responsable : </label>
-          <?php echo $Customer['User']['name'] ?>
+          <label for="" class="control-label">Fecha de Creacion : </label>
+          <?php echo $Customer['Customer']['created'] ?>
         </div> 
+        
+        <div class="form-group">
+          <label for="" class="control-label">Fecha de Modificacion : </label>
+          <?php echo $Customer['Customer']['modified'] ?>
+        </div> 
+
 
         </div>
         <!-- tab 2-->
@@ -224,15 +250,20 @@
         	url:'<?php echo $this->Html->url(array("controller" => "contacts", "action" => "showGridContact", $Customer["Customer"]["id"])); ?>',
         	datatype:"json",
         	mtype:"GET",
-        	colNames:['id', 'Nombre', 'Telefono', 'Email', 'Estado', 'Fecha de Creacion', 'Acciones'],
+        	colNames:['id', 'Nombre', 'Telefono', 'Celular', 'Email', 'Linea de Negocio', 'Cargo', 'Estado', 'Comercial', 'Fecha de Creacion', 'Fecha de Modificacion', 'Acciones'],
         	colModel:[
         		{name:'id',index:'id',hidden:true,width:10},
    				{name:'name',index:'name',editable:true},
    				{name:'phone',index:'phone',editable:true},
+   				{name:'celphone',index:'celphone',editable:true},
    				{name:'email',index:'email',editable:true},
+   				{name:'line',index:'line',editable:true},
+   				{name:'position',index:'position',editable:true},
    				{name:'state',index:'state',width:50},
+   				{name:'username',index:'username'},
    				{name:'created',index:'created'},
-   				{name: 'action', width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:true,delbutton:true,keys:true,delOptions:{
+   				{name:'modified',index:'modified'},
+   				{name: 'action', frozen:true, width:70, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:true,delbutton:true,keys:true,delOptions:{
        url:'<?php echo $this->Html->url(array("controller" => "Contacts", "action" => "delete"));?>',
         mtype: "POST",
                       onclickSubmit :function(params, postdata) {

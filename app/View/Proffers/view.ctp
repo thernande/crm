@@ -160,7 +160,7 @@
 	</div>
 
 </div> <!-- container -->
-<?php $route; ?>
+
 <script type="text/javascript">
 
 
