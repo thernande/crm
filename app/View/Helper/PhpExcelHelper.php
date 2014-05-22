@@ -43,7 +43,7 @@ class PhpExcelHelper extends AppHelper {
      */
     public function createWorksheet() {
         // load vendor classes
-       App::import('Vendor','PHPExcel',array('file' => 'excel/classes/PHPExcel.php')); 
+       App::import('Vendor','PHPExcel',array('file' => 'excel/Classes/PHPExcel.php')); 
 
         $this->_xls = new PHPExcel();
         $this->_row = 1;
@@ -59,7 +59,7 @@ class PhpExcelHelper extends AppHelper {
      */
     public function loadWorksheet($file) {
         // load vendor classes
-        App::import('Vendor','PHPExcel',array('file' => 'excel/classes/PHPExcel.php')); 
+        App::import('Vendor','PHPExcel',array('file' => 'excel/Classes/PHPExcel.php')); 
 
         $this->_xls = PHPExcel_IOFactory::load($file);
         $this->setActiveSheet(0);
@@ -167,7 +167,7 @@ class PhpExcelHelper extends AppHelper {
         // offset
         $offset = 0;
         if (isset($params['offset']))
-            $offset = is_numeric($params['offset']) ? (int)$params['offset'] : PHPExcel_Cell::columnIndexFromString($params['offset']);
+            $offset = is_numeric($params['offset'])?(int)$params['offset']:PHPExcel_Cell::columnIndexFromString($params['offset']);
 
         // font name
         if (isset($params['font']))
@@ -250,11 +250,11 @@ class PhpExcelHelper extends AppHelper {
 
         // filter (has to be set for whole range)
         if (count($this->_tableParams['filter']))
-            $this->_xls->getActiveSheet()->setAutoFilter(PHPExcel_Cell::stringFromColumnIndex($this->_tableParams['filter'][0]) . ($this->_tableParams['header_row']) . ':' . PHPExcel_Cell::stringFromColumnIndex($this->_tableParams['filter'][count($this->_tableParams['filter']) - 1]) . ($this->_tableParams['header_row'] + $this->_tableParams['row_count']));
+            $this->_xls->getActiveSheet()->setAutoFilter(PHPExcel_Cell::stringFromColumnIndex($this->_tableParams['filter'][0]).($this->_tableParams['header_row']).':'.PHPExcel_Cell::stringFromColumnIndex($this->_tableParams['filter'][count($this->_tableParams['filter'])-1]).($this->_tableParams['header_row']+$this->_tableParams['row_count']));
 
         // wrap
         foreach ($this->_tableParams['wrap'] as $col)
-            $this->_xls->getActiveSheet()->getStyle(PHPExcel_Cell::stringFromColumnIndex($col) . ($this->_tableParams['header_row'] + 1) . ':' . PHPExcel_Cell::stringFromColumnIndex($col) . ($this->_tableParams['header_row'] + $this->_tableParams['row_count']))->getAlignment()->setWrapText(true);
+            $this->_xls->getActiveSheet()->getStyle(PHPExcel_Cell::stringFromColumnIndex($col).($this->_tableParams['header_row']+1).':'.PHPExcel_Cell::stringFromColumnIndex($col).($this->_tableParams['header_row']+ $this->_tableParams['row_count']))->getAlignment()->setWrapText(true);
 
         return $this;
     }
@@ -332,15 +332,15 @@ class PhpExcelHelper extends AppHelper {
         ob_end_clean();
 
         // headers
-        header('Content-Type: application/vnd.openXMLformats-officedocument.spreadsheetml.sheet');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
 
         // writer
-        $objWriter = $this->getWriter($writer);
+        $objWriter = PHPExcel_IOFactory::createWriter($this->_xls, 'Excel2007');
+        $objWriter->setPreCalculateFormulas(false);
         $objWriter->save('php://output');
-
-        exit;
+        exit();
     }
 
     /**
@@ -353,3 +353,4 @@ class PhpExcelHelper extends AppHelper {
         unset($this->_xls);
     }
 }
+?>

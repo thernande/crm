@@ -108,9 +108,9 @@
 
   <div id="content">
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-        <li class="active"><a href="#data" data-toggle="tab">Datos Basicos</a></li>
+        <li><a href="#data" data-toggle="tab">Datos Basicos</a></li>
         <li><a href="#note" data-toggle="tab" >Notas</a></li>
-        <li><a href="#contact" data-toggle="tab" >Contactos</a></li>
+        <li class="active"><a href="#contact" data-toggle="tab" >Contactos</a></li>
     </ul>
     
     
@@ -120,8 +120,21 @@
         <div class="tab-pane active " id="data">
         
         <h2><span class="label label-warning"><?php echo $Customer['Customer']['name'] ?> </span></h2>      
+		
+		<?php foreach ($Funcionality as $Functionary): ?>
+		
+		<div class="form-group">
+          <label for="" class="control-label">Funcionario : </label>
+          <?php echo $Functionary['Functionary']['name'] ?>
+        </div> 
 
-
+        <div class="form-group">
+          <label for="" class="control-label">Cargo : </label>
+          <?php echo $Functionary['Functionary']['position'] ?>
+        </div> 
+		
+		<?php endforeach; ?>
+		
         <div class="form-group">
           <label for="" class="control-label">Dirección : </label>
           <?php echo $Customer['Customer']['dress'] ?>
@@ -129,7 +142,7 @@
 
         <div class="form-group">
           <label for="" class="control-label">Municipio : </label>
-          <?php echo $Customer['Municipality']['name'] ?>
+          <?php echo $Customer['Department']['name'] ?>
         </div> 
 
 

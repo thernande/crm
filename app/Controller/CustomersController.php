@@ -5,7 +5,7 @@ class CustomersController extends AppController {
     
 
     public $helpers = array('Html','Form', 'Js', 'PhpExcel');
-    public $components = array('Session', 'Paginator', 'RequestHandler','Cookie', 'PhpExcel');
+    public $components = array('Session', 'Paginator', 'RequestHandler','Cookie');
     public $name = 'Customers';
 
 
@@ -24,11 +24,11 @@ class CustomersController extends AppController {
     $this->set(compact('Users'));
 
 
-    $this->loadModel('Municipality');
-    $this->set('Municipalities', $this->Municipality->find('list',array(
+    $this->loadModel('Department');
+    $this->set('Departments', $this->Department->find('list',array(
                'order' => array('name' => 'asc'))
     ));
-    $this->set(compact('Municipalities'));
+    $this->set(compact('Departments'));
 	
 
     }
@@ -39,7 +39,7 @@ class CustomersController extends AppController {
         //municipalty id = 2 corresponde al id del departamento de antioquia
 
         $this->set('total_customer', $total_customer = $this->Customer->find('count', array('conditions' => array('Customer.state !=' => 'Inactivo'))));
-        $this->set('total_cust_ant', $total_cust_ant = $this->Customer->find('count', array('conditions' => array('Customer.state !=' => 'Inactivo','Customer.municipality_id =' => '2' ))));
+        $this->set('total_cust_ant', $total_cust_ant = $this->Customer->find('count', array('conditions' => array('Customer.state !=' => 'Inactivo','Customer.department_id =' => '2' ))));
 
 
     }
@@ -47,6 +47,7 @@ class CustomersController extends AppController {
 
 
     public function view($id = null) {
+    	$this->loadModel('Functionary');
         $this->Customer->id = $id;
         if (!$this->Customer->exists()) {
             throw new NotFoundException(__('Cliente Invalido'));
@@ -54,7 +55,7 @@ class CustomersController extends AppController {
         $this->set('Customer', $this->Customer->read(null, $id));
 
 
-            
+            $this->set('Funcionality', $this->Functionary->find('all', array('conditions'=>array('customer_id'=>$id))));
             
             $this->set('customer_id',$id);
 
@@ -66,12 +67,15 @@ class CustomersController extends AppController {
 
     public function add() {
     if (!empty($this->request->data)) {
-
+		$this->loadModel('Functionary');
          $this->request->data['Customer']['state'] =   'Activo' ;
          
          $Customer = $this->Customer->save($this->request->data);
-
-       
+         $customer = $this->Customer->find('first',array('fields'=>array('id'), 'order'=>array('id'=>'desc')));
+         for($i=0;$i<count($this->request->data['Functionary']);$i++){
+		$this->request->data['Functionary'][$i]['customer_id']= $customer['Customer']['id'];
+		 }
+         $Functionary=$this->Functionary->saveAll($this->request->data['Functionary']);
                     if (!empty($Customer)) {
 					//crear directorio del cliente
 					$serv = WWW_ROOT.'/files/';
@@ -84,7 +88,7 @@ class CustomersController extends AppController {
 					//termina la creacion del archivo
 
                     $this->Session->setFlash(__('El Cliente ha sido salvado'));
-                    $this->redirect(array('action' => 'index'));
+                    $this->redirect(array('action' => 'view', $customer['Customer']['id']));
                     
                     }
                     else
@@ -263,7 +267,7 @@ else{
 
 		public function export(){
 
-			$limit = $this->request->query['num'];
+		$limit = $this->request->query['num'];
 
     	$sidx = $this->request->query['id'];
     	$sord = $this->request->query['or'];
@@ -272,15 +276,16 @@ else{
     	$start = $limit * $page - $limit;
     	$resultado=$this->Customer->find('all',array('fields' => array('id','nit','name', 'dress', 'state','created', 'modified'),'ORDER BY =' => $sidx.' '.$sord, 'limit' => $start,$limit));
     	$this->set('customer', $resultado);
+ 
     }
 
 
 
 
 		
-		public function get_cities_by_municipality($id = null) {
+		public function get_cities_by_Department($id = null) {
     
-   		 	$cities = $this->City->find('all', array('conditions' => array('cities.municipality_id =' => $id), 'recursive' => 3));
+   		 	$cities = $this->City->find('all', array('conditions' => array('cities.department_id =' => $id), 'recursive' => 3));
     		$returnCities = array();
     		foreach ($cities as $city) {
     		 	$returnCities[$city['City']['id']] = "{$city['City']['name']}";

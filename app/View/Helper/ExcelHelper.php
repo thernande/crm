@@ -1,5 +1,3 @@
- 
- 
 <?php
 App::uses('AppHelper', 'View/Helper');
 
@@ -9,7 +7,7 @@ App::uses('AppHelper', 'View/Helper');
  * @package PhpExcel
  * @author segy
  */
-class PhpExcelHelper extends AppHelper {
+class ExcelHelper extends AppHelper {
     /**
      * Instance of PHPExcel class
      *
@@ -334,14 +332,13 @@ class PhpExcelHelper extends AppHelper {
         ob_end_clean();
 
         // headers
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        /*header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-
+		*/
         // writer
-        $objWriter = $this->getWriter($writer);
-        $objWriter->save('php://output');
-
+        //$objWriter = $this->getWriter($writer);
+        //$objWriter->save('php://output');
         exit;
     }
 

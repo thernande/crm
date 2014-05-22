@@ -4,10 +4,10 @@
 		public $name='city';
 		
 		public $belongsTo=array(
-			'Municipality'=>array(
-				'className'=>'municipality',
+			'Department'=>array(
+				'className'=>'Department',
 				'dependant'=>true,
-				'foreignKey'=>'municipality_id'
+				'foreignKey'=>'department_id'
 			)
 		);
 	}

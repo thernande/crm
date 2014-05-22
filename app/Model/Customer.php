@@ -15,10 +15,10 @@ class Customer extends AppModel {
         ),
 
 
-           'Municipality' => array(
-            'className' => 'Municipality',
+           'Department' => array(
+            'className' => 'Department',
             'dependent' => true,
-            'foreignKey' => 'Municipality_id',
+            'foreignKey' => 'department_id',
 
         ),
         
@@ -43,6 +43,9 @@ class Customer extends AppModel {
 
         'Proffer' => array(
             'className' => 'Proffer',
+        ),
+        'Functionary' => array(
+            'className' => 'Functionary',
         )
     );
 
@@ -58,7 +61,7 @@ class Customer extends AppModel {
         'rule' => 'notEmpty',
         'message' => 'Ingrese la dirección del cliente'
         ),
-        'municipality_id' => array(
+        'department_id' => array(
         'rule' => 'notEmpty',
         'message' => 'Seleccione el municipio'
         )

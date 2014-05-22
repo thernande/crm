@@ -18,7 +18,9 @@
  */
 
 $cakeDescription = __d('cake_dev', '');
-
+       $proffer=strpos($_SERVER['REQUEST_URI'],"proffers");
+		$oportunity=strpos($_SERVER['REQUEST_URI'],"oportunities");
+		$customer=strpos($_SERVER['REQUEST_URI'],"customers");
 ?>
 <!DOCTYPE html>
 <html>
@@ -60,9 +62,13 @@ $cakeDescription = __d('cake_dev', '');
 					<ul class="nav navbar-nav">
 							<li><a class="img-responsive" alt="Responsive image" ><?php echo $this->Html->image('logo/logo.png')?></a></li>	
 							<li><a class="navbar-brand" ><?php echo 'User name'?></a></li>	  
-							<li class="active"><a href="#">Home</a></li>
-							<li><a href="<?php echo $this->Html->url(array('controller' => 'customers', 'action' => 'index')); ?>">Gestión de Clientes</a></li>
-							<li><a href="<?php echo $this->Html->url(array('controller' => 'proffers', 'action' => 'index')); ?>">Propuestas Comerciales</a></li>
+							<li><a href="#">Home</a></li>
+							<li><a <?php if($customer!==false){echo 'class="active"';}?> href="<?php echo $this->Html->url(array('controller' => 'customers', 'action' => 'index')); ?>">Gestión de Clientes</a></li>
+
+							<li><a <?php if($oportunity!==false){echo 'class="active"';}?> href="<?php echo $this->Html->url(array('controller' => 'Oportunities', 'action' => 'index')); ?>">Oportunidad de Negocio</a></li>
+
+							<li><a <?php if($proffer!==false){echo 'class="active"';}?> href="<?php echo $this->Html->url(array('controller' => 'proffers', 'action' => 'index')); ?>">Propuestas Comerciales</a></li>
+
 					        <li><a href="#">Contratos</a></li>
 							<li id="fat-menu" class="dropdown">
 								<a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Mi cuenta <b class="caret"></b></a>

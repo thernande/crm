@@ -79,10 +79,19 @@
           </div>
 
 
+        <?php foreach ($Funcionality as $Functionary): ?>
+		
+		<div class="form-group">
+          <label for="" class="control-label">Funcionario : </label>
+          <?php echo $Functionary['Functionary']['name'] ?>
+        </div> 
+
         <div class="form-group">
-          <label for="" class="control-label">Contacto:</label>
-          <?php echo $Proffer['Contact']['name'] ?>
-        </div>
+          <label for="" class="control-label">Cargo : </label>
+          <?php echo $Functionary['Functionary']['position'] ?>
+        </div> 
+		
+		<?php endforeach; ?>
 
         <div class="form-group">
           <label for="" class="control-label">Linea de Negocio : </label>

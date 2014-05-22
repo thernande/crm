@@ -5,9 +5,9 @@
     	public $components = array('Session','RequestHandler');
     	public $name = 'Cities';
 		
-		public function get_cities_by_municipality($id = null) {
+		public function get_cities_by_Department($id = null) {
     
-   		 	$cities = $this->City->find('all', array('conditions' => array('municipality_id =' => $id), 'recursive' => 1));
+   		 	$cities = $this->City->find('all', array('conditions' => array('Department_id =' => $id), 'recursive' => 1));
     		$returnCities = array();
     		foreach ($cities as $city) {
     		 	$returnCities[$city['City']['id']] = "{$city['City']['city']}";
@@ -17,7 +17,7 @@
 
   		}
   		
-  		public function html_cities_by_municipality($id = null) {
+  		public function html_cities_by_Department($id = null) {
     
 
    		 	$this->layout = false;
@@ -26,7 +26,7 @@
      
             
 
-    		$cities = $this->get_cities_by_municipality($id);
+    		$cities = $this->get_cities_by_Department($id);
 
 
     		$strReturn = '<option> -- </option>';

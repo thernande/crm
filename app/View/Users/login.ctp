@@ -26,7 +26,7 @@
                   ?>
                   </fieldset>
               <?php echo $this->Form->end(__('Login')); ?>
-            
+            <?php echo $this->Html->link("Recuperar Contraseña",array("controller"=>"users","action"=>"forgetpass")); ?>
           </div>
   
 

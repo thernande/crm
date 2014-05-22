@@ -53,7 +53,7 @@
             <div class="col-lg-10">
             <?php
 
-             echo $this->Form->input("Customer.municipality_id", array('label' => false, 'options' => $Municipalities, 'empty' => '-- Seleccione el departamento --')); 
+             echo $this->Form->input("Customer.department_id", array('label' => false, 'options' => $Departments, 'empty' => '-- Seleccione el departamento --')); 
             
              ?>  
             </div>

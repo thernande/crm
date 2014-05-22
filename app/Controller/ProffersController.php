@@ -38,11 +38,13 @@ class ProffersController extends AppController {
 
     public function view($id = null) {
         $this->Proffer->id = $id;
+        $this->loadModel('Functionary');
         if (!$this->Proffer->exists()) {
             throw new NotFoundException(__('Registro Invalido'));
         }
+        $customer= $this->Proffer->read(null,$id);
         $this->set('Proffer', $this->Proffer->read(null, $id));
-            
+            $this->set('Funcionality', $this->Functionary->find('all', array('conditions'=>array('customer_id'=>$customer['Customer']['id']))));
             $this->set('customer_id',$id);
 
     }

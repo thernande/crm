@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `dress` varchar(200) NOT NULL,
   `note` text NOT NULL,
   `email` varchar(200) NOT NULL,
-  `municipality_id` int(11) NOT NULL,
+  `Department_id` int(11) NOT NULL,
   `user_id` varchar(200) NOT NULL,
   `created` date NOT NULL,
   `modified` date NOT NULL,
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
 -- Volcado de datos para la tabla `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `phone`, `dress`, `note`, `email`, `municipality_id`, `user_id`, `created`, `modified`, `state`) VALUES
+INSERT INTO `customers` (`id`, `name`, `phone`, `dress`, `note`, `email`, `Department_id`, `user_id`, `created`, `modified`, `state`) VALUES
 (1, 'cleinte 2012121', '2122421', 'cra s2asa', '<p><strong>titulo</strong></p><p>ALIAMOS Ltda. Alianzas para el Mejoramiento Organizacional se dedica a brindar servicios de asesor&iacute;a y consultor&iacute;a a empresas del sector p&uacute;blico y privado por medio de la transferencia de conocimientos, herramientas y metodolog&iacute;as, que aporten a su desarrollo y mejoramiento organizacional; somos un equipo de profesionales competentes en diferentes disciplinas y nuestro trabajo se basa en una relaci&oacute;n de confianza, confidencialidad y respeto con las entidades clientes.</p><ul><li>uno&nbsp;</li><li>dos&nbsp;</li><li>tres</li></ul>', 'nalvarez@esu.com.co', 6, '4', '2014-01-08', '2014-01-13', 'Activo'),
 (2, 'ESU editname', '332', 'cll 16 edit ', '<p><strong>AVER SI DAAAAAAAAAAAAsasas</strong></p>', 'nalvarez@esu.com.co', 1, '1', '2014-01-09', '2014-01-13', 'Activo'),
 (36, 'carbeta', '2310000', 'call', '<p><strong>carlos betaaaaa</strong></p>\r\n', 'carbeta@esu.com.co', 1, '2', '2014-01-10', '2014-01-10', 'Activo'),
@@ -339,10 +339,10 @@ INSERT INTO `groups` (`id`, `name`, `created`, `modified`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `municipalities`
+-- Estructura de tabla para la tabla `Departments`
 --
 
-CREATE TABLE IF NOT EXISTS `municipalities` (
+CREATE TABLE IF NOT EXISTS `Departments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `created` date NOT NULL,
@@ -351,10 +351,10 @@ CREATE TABLE IF NOT EXISTS `municipalities` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
--- Volcado de datos para la tabla `municipalities`
+-- Volcado de datos para la tabla `Departments`
 --
 
-INSERT INTO `municipalities` (`id`, `name`, `created`, `modified`) VALUES
+INSERT INTO `Departments` (`id`, `name`, `created`, `modified`) VALUES
 (1, 'AMAZONAS', '0000-00-00', '0000-00-00'),
 (2, 'ANTIOQUIA', '0000-00-00', '0000-00-00'),
 (3, 'ARAUCA', '0000-00-00', '0000-00-00'),
