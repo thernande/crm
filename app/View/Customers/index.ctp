@@ -86,7 +86,7 @@ jQuery(document).ready(function($){
    		{name:'created',index:'created'},
    		{name:'modified',index:'modified'},
    		{name:'log',index:'log'},
-   		{name: 'action', frozen:true, width:100, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:true,delbutton:true,keys:true,delOptions:{
+   		{name: 'action', frozen:true, width:100, fixed:true, sortable:false,formatter:'actions', resize:false, formatoptions:{editbutton:false,delbutton:true,keys:true,delOptions:{
        url:'<?php echo $this->Html->url(array("controller" => "Customers", "action" => "delete"));?>',
         mtype: "POST",
                       onclickSubmit :function(params, postdata) {
@@ -102,7 +102,7 @@ jQuery(document).ready(function($){
    	],
    	rowNum:10,
 	rowList : [5,10,15],
-	editurl: '<?php echo $this->html->url(array("controller" => "customers", "action" => "edit")); ?>',
+	//editurl: '<?php echo $this->html->url(array("controller" => "customers", "action" => "edit")); ?>',
 	rownumWidth: 40,
    	pager: jQuery('#page'),
    	sortname: 'id',
@@ -161,13 +161,35 @@ jQuery(document).ready(function($){
      loadComplete: function () {
     var grid = $(this),
         iCol = getColumnIndexByName(grid,'action'); // 'act' - name of the actions column
-    grid.children("tbody")
+        grid.children("tbody")
         .children("tr.jqgrow")
         .children("td:nth-child("+(iCol+1)+")")
         .each(function() {
             $("<div>",
                 {
                     title: "editar cliente seleccionado",
+                    mouseover: function() {
+                        $(this).addClass('ui-state-hover');
+                    },
+                    mouseout: function() {
+                        $(this).removeClass('ui-state-hover');
+                    },
+                    click: function(e) {
+                        document.location.href = "customers/edit/"+$(e.target).closest("tr.jqgrow").attr("id");
+                    }
+                }
+              ).css({"margin-left": "5px", float:"left"})
+               .addClass("ui-pg-div ui-inline-custom")
+               .append('<span class="ui-icon ui-icon-pencil"></span>')
+               .appendTo($(this).children("div"));
+    });
+    grid.children("tbody")
+        .children("tr.jqgrow")
+        .children("td:nth-child("+(iCol+1)+")")
+        .each(function() {
+            $("<div>",
+                {
+                    title: "ver cliente seleccionado",
                     mouseover: function() {
                         $(this).addClass('ui-state-hover');
                     },

@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class HomeController extends AppController {
 
-    public $components = array('RequestHandler');
+    public $components = array('RequestHandler', 'Cookie');
     public $helpers = array('Js');
 
     function beforeFilter() {

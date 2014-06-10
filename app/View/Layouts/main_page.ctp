@@ -29,7 +29,7 @@ $cakeDescription = __d('cake_dev', '');
         <?php echo $title_for_layout; ?>
     </title>
     <?php
-        echo $this->Html->meta('icon');
+        echo $this->Html->meta('logo');
 
     echo $this->Html->css('bootstrap.min');
     echo $this->Html->css('custom');
@@ -57,7 +57,7 @@ $cakeDescription = __d('cake_dev', '');
     <div class="container">
 
       <div class="masthead">
-        <img src = "img/logo/logo.png"> </img>
+        <img src = "img/logo/Logo ESU.jpg"> </img>
         <ul class="nav nav-justified">
           <li class="active"><a href="#">Home</a></li>
           <li><a href="#">Projects</a></li>

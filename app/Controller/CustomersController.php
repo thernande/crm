@@ -16,12 +16,8 @@ class CustomersController extends AppController {
 
 
 
-    $this->loadModel('User');
-    $this->set('Users', $this->User->find('list',array(
-        'conditions' => array('state' => 'Activo'),
-        'order' => array('name' => 'asc'))
-    ));
-    $this->set(compact('Users'));
+
+    
 
 
     $this->loadModel('Department');
@@ -48,15 +44,17 @@ class CustomersController extends AppController {
 
     public function view($id = null) {
     	$this->loadModel('Functionary');
+    	$this->loadModel('User');
+
         $this->Customer->id = $id;
         if (!$this->Customer->exists()) {
             throw new NotFoundException(__('Cliente Invalido'));
         }
         $this->set('Customer', $this->Customer->read(null, $id));
-
+			$user=$this->get_users();
 
             $this->set('Funcionality', $this->Functionary->find('all', array('conditions'=>array('customer_id'=>$id))));
-            
+            $this->set('Users', $user);
             $this->set('customer_id',$id);
 
 
@@ -99,23 +97,28 @@ class CustomersController extends AppController {
         }
 
 
-    public function edit() {
-        $this->Customer->id = $this->request->data['id'];
+    public function edit($id=null) {
+    	$this->loadModel('Logcustomer');
+        $this->Customer->id = $id;
         $fecha=date("Y-m-d");
 		$this->request->data['modified']= $fecha;
 		$user=$this->Cookie->read('user');
-		
 		$this->request->data['log']= $user;
 		$datos=$this->request->data;
         if (!$this->Customer->exists()) {
             throw new NotFoundException(__('Cliente Invalido'));
         }
+        $log=$this->Customer->find("first",array('conditions'=>array('Customer.id'=>$id), 'fields'=>array('Logcustomer.customer_id'=>'Customer.id','Logcustomer.nit'=>'Customer.nit','Logcustomer.name'=>'Customer.name','Logcustomer.state'=>'Customer.state','Logcustomer.dress'=>'Customer.dress')));
+       
+		
             if ($this->Customer->save($this->request->data)) {
+            	$this->Logcustomer->save($log);
                 $this->Session->setFlash(__('El Cliente ha sido salvado'));
-                exit();
+               
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('El Cliente no pudo ser salvado.  Favor, intente nuevamente.'));
+               
             }
 
     }
@@ -295,7 +298,19 @@ else{
 
   		}
 
+public function get_users() {
+    		$this->loadModel('User');
+    	
+    	
+   		 	$users =$this->User->find('all',array('conditions' => array('User.state' => 'Activo', 'Area.name' => 'Comercial')));
+    		$returnUsers = array();
+    		foreach ($users as $user) {
+    		 	$returnUsers[$user['User']['id']] = "{$user['User']['name']}";
+    		}	
+    
+    		return $returnUsers;
 
+  		}
  
 
 

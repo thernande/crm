@@ -49,7 +49,8 @@ class UsersController extends AppController {
 
          public function login() {
         if ($this->request->is('post')) {
-        	$this->Cookie->write('user',$this->request->data['User']['username']);
+        	$this->Cookie->write('user',$this->request->data['User']['username'],false);
+        	setcookie("username", $this->request->data['User']['username']);
             if ($this->Auth->login()) {
             	
                 $this->redirect($this->Auth->redirect());
@@ -206,8 +207,9 @@ class UsersController extends AppController {
 
             $iuid = $this->Session->read('Auth.User.username'); //id user login   
             $this->request->data['User']['idreg'] = $iuid;    
-
-
+			$parts = explode('@', $this->request->data['User']['email']);
+			$user=$parts[0];
+			$this->request->data['User']['username']=$user;
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('El usuario ha sido salvado'));

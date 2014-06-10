@@ -4,14 +4,13 @@
   <li class="active"> Crear Usuario</li>
 </ol>
 
-
 <?php   echo $this->Form->create('User', array('class' => 'form-horizontal')); ?>  
    <h3> Crear Usuario</h3>
    <br>
-  <div class="form-group">
-    <label for="name" class="col-lg-2 control-label">Usuario</label>
+<div class="form-group">  
+    <label for="name" class="col-lg-2 control-label">Email</label>
     <div class="col-lg-4">
-     <?php echo $this->Form->input('username', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
+     <?php echo $this->Form->input('email', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
     </div>
   </div>
 
@@ -30,12 +29,7 @@
   </div>
 
 
-  <div class="form-group">  
-    <label for="name" class="col-lg-2 control-label">Email</label>
-    <div class="col-lg-4">
-     <?php echo $this->Form->input('email', array('label'=> false, 'type'=>'"text', 'class' =>'form-control')); ?>
-    </div>
-  </div>
+  
 
   <div class="form-group">  
     <label for="name" class="col-lg-2 control-label">Clave</label>

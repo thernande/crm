@@ -46,6 +46,11 @@ class Customer extends AppModel {
         ),
         'Functionary' => array(
             'className' => 'Functionary',
+        ),
+        'Logcustomer' => array(
+            'className' => 'Logcustomer',
+            'foreignKey' => 'Customer_id',
+            'dependant'=>true
         )
     );
 

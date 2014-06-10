@@ -32,7 +32,7 @@ App::uses('AppController', 'Controller');
 class PagesController extends AppController {
 
 
-
+public $Helpers = array('Cookie');
 
 	function index() {
 

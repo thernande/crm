@@ -6,7 +6,7 @@
 <?php echo $this->Html->script('jquery-1.7.2.min');?>
 <?php echo $this->Html->script('jqGrid/grid.locale-es');?>
 <?php echo $this->Html->script('jqGrid/jquery.jqGrid.min');?>
-<?php echo $this->Html->script('jquery-ui-1.9.2.custom.min');?>
+<?php echo $this->Html->script('jquery-ui-1.9.2.custom.min'); ?>
 <ol class="breadcrumb">
   <li><?php echo $this->Html->link("Home", array('controller' => 'admin',  'action' => 'index')); ?></li>
    <li><?php echo $this->Html->link("Clientes", array('controller' => 'Customers',  'action' => 'index')); ?></li>
@@ -76,7 +76,7 @@
     <div class="col-lg-10">
     <?php
 
-     echo $this->Form->input("Contacts.user_id", array('label' => false, 'options' => $Users, 'empty' => '-- Seleccione el funcionario responsable --')); 
+     echo $this->Form->input("Contacts.user_id", array('label' => false, 'options' => array($Users), 'empty' => '-- Seleccione el funcionario responsable --')); 
     
      ?>  
     </div>
@@ -111,13 +111,14 @@
         <li><a href="#data" data-toggle="tab">Datos Basicos</a></li>
         <li><a href="#note" data-toggle="tab" >Notas</a></li>
         <li class="active"><a href="#contact" data-toggle="tab" >Contactos</a></li>
+        <li><a href="#log" data-toggle="tab">Ultimos Cambios</a></li>
     </ul>
     
     
     <div id="my-tab-content" class="tab-content">
         
         <!-- tab 1-->
-        <div class="tab-pane active " id="data">
+        <div class="tab-pane " id="data">
         
         <h2><span class="label label-warning"><?php echo $Customer['Customer']['name'] ?> </span></h2>      
 		
@@ -175,7 +176,7 @@
 
         </div>
         <!-- tab 3-->
-        <div class="tab-pane " id="contact">
+        <div class="tab-pane active " id="contact">
            
                       <h2><span class="label label-warning">Contactos</span></h2>
 
@@ -242,7 +243,17 @@
 
 
         </div>
- 
+ 		
+ 		<!-- tab 4-->
+        <div class="tab-pane " id="log">
+            
+            <h2><span class="label label-warning">Ultimos Cambios</span></h2>
+                <div id="tablelog">
+							<table id="tlog" width="100%"></table>
+							<div id="pagelog"></div>
+  				</div>
+
+        </div>
 
             
         </div>
@@ -301,8 +312,43 @@
 		viewrecords: true
         });
         jQuery("#list").navGrid("#page",{del:true,add:false,edit:false,search:false});
+        
+    
+    
+	$("#tlog").jqGrid({
+        	url:'<?php echo $this->Html->url(array("controller" => "logcustomers", "action" => "showGridLog", $Customer["Customer"]["id"])); ?>',
+        	datatype:"json",
+        	mtype:"GET",
+        	colNames:['id', 'NIT', 'Nombre', 'Direccion', 'Estado', 'Fecha de Modificacion'],
+        	colModel:[
+        		{name:'id',index:'id',hidden:true,width:10},
+   				{name:'nit',index:'nit'},
+   				{name:'name',index:'name'},
+   				{name:'dress',index:'dress'},
+   				{name:'state',index:'state'},
+   				{name:'created',index:'created'}
+        	],
+        rowNum:5,
+        rowList : [5,10,15],
+		rownumWidth: 40,
+		pager: jQuery('#pagelog'),
+   		sortname: 'id',
+   	 	sortorder: 'asc',
+    	loadonce: true,
+		caption: "Cambios Anteriores",
+		height:"auto",
+		autowidth: true,
+		viewrecords: true
+        });
+        jQuery("#log").navGrid("#pagelog",{del:false,add:false,edit:false,search:false});
+        
+        
+        $(window).bind('resize', function() {
+    $("#list").setGridWidth(($(window).width())-110);
+    $("#tlog").setGridWidth(($(window).width())-110);
+}).trigger('resize');
     });
-
+	
 
 </script>    
 

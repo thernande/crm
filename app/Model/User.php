@@ -2,7 +2,7 @@
 // app/Model/User.php
 class User extends AppModel {
 
-    public $name = 'user';
+    public $name = 'User';
 
      public $belongsTo = array(
         'Area' => array(
